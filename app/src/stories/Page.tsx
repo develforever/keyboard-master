@@ -1,7 +1,5 @@
 import React from 'react';
 
-
-import "../app/globals.css";
 import './page.css';
 
 type User = {

@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 
 import "./globals.css";
-import Wrapper from "components/wrapper";
-
-
+import Wrapper from "@/components/wrapper";
 
 export const metadata: Metadata = {
   title: "Keyboard master",
