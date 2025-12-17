@@ -7,7 +7,7 @@
 }
 .keyboard__btn {
     padding: 4px 8px;
-
+    color: #ababab;
     border-top: 1px solid rgba(255, 255, 255, 1.0);
     border-left: 1px solid rgba(255, 255, 255, 1.0);
     border-right: 1px solid rgba(255, 255, 255, .2);
@@ -19,16 +19,4 @@
     border-left: 1px solid rgba(255, 255, 255, .2);
     background-color: rgba(59, 130, 246, 0.15);
     color: white;
-    animation: key-press-animation 0.33s ease-in-out;
-}
-@keyframes key-press-animation {
-    0% {
-        background-color: rgba(59, 139, 246, 0.15);
-    }
-    10% {
-        background-color: rgba(59, 139, 246, .45);
-    }
-    100% {
-        background-color: rgba(59, 139, 246, 0.15);
-    }
 }
