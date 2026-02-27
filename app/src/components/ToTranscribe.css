@@ -1,0 +1,13 @@
+
+.to-transcribe {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    height: 100%;
+}
+
+.to-transcribe--loading {
+    opacity: 0.5;
+}
+.to-transcribe--ready {
+    opacity: 1;
+}

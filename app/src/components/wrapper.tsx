@@ -1,7 +1,7 @@
 'use client';
 
-import { AppContext } from "@/app/context";
-import { useContext } from "react";
+import { AppContext, AppContextInterface, AppProvider, useAppContext } from "@/app/context";
+import { useContext, useState } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 
 const geistSans = Geist({
@@ -14,22 +14,20 @@ const geistMono = Geist_Mono({
     subsets: ["latin"],
 });
 
-
 export default function Wrapper({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const appContext = useContext(AppContext);
+    const appContext = useAppContext();
+
     return (
-        <AppContext.Provider value={{ lang: 'en' }}>{children}
-            <html lang={appContext.lang}>
-                <body
-                    className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-                >
-                    {children}
-                </body>
-            </html>
-        </AppContext.Provider>
+        <html lang={appContext.lang}>
+            <body
+                className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+            >
+                {children}
+            </body>
+        </html>
     );
 }

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import "./globals.css";
 import Wrapper from "@/components/wrapper";
+import { AppProvider } from "./context";
 
 export const metadata: Metadata = {
   title: "Keyboard master",
@@ -15,6 +16,8 @@ export default function RootLayout({
 }>) {
 
   return (
-   <Wrapper>{children}</Wrapper>
+    <AppProvider>
+      <Wrapper>{children}</Wrapper>
+    </AppProvider>
   );
 }
