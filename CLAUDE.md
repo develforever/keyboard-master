@@ -101,6 +101,12 @@ Nie uruchamiaj gita za niego — przygotuj gotową listę do skopiowania.
   i changelog powstają z `git log`, a nie z pamięci.
 - W PowerShell łącz polecenia `;`. Treści commitów z apostrofem lub `$` ujmuj
   w cudzysłów pojedynczy.
+- **Nigdy nie uruchamiaj gita przez most Cowork do dysku.** Most nie potrafi
+  kasować plików, więc każde przerwane polecenie zostawia osierocony
+  `.git/index.lock`, którego nie da się z tej strony usunąć. Plik blokuje
+  wszystkie operacje zapisu w repo na Windows i odblokowanie wymaga ręcznego
+  `Remove-Item .git\index.lock` u użytkownika. Git obsługuje wyłącznie Claude CLI
+  albo sam użytkownik.
 
 ## Architektura — kierunek zależności
 
@@ -174,9 +180,11 @@ z `SECTION_WIDTH`; `layout.test.ts` to weryfikuje.
 - **Końce linii.** Repo trzyma LF, Windows zapisuje CRLF. `.gitattributes` wymusza
   `eol=lf`. Jeśli `git status` pokazuje wszystkie pliki jako zmienione:
   `git add --renormalize .` i osobny commit.
-- **`next@16.0.8` ma zgłoszoną podatność** (B-002) — do podbicia w obrębie 16.x.
-- **`.nvmrc` deklaruje v25, lokalnie jest Node 22** (B-003) — CI buduje na innej
-  wersji niż maszyna deweloperska.
+- **Zostajemy w `next` 16.x.** Aktualnie `16.3.1`, przypięte dokładnie razem
+  z `eslint-config-next`. Przejście na 17 to osobna decyzja, nie podbicie.
+- **`npm audit` zgłasza trzy high w `image-size`** (B-014) — wyłącznie łańcuch
+  Storybooka, bez poprawki u dostawcy. `npm audit --omit=dev` jest czyste
+  i to jest bramka, którą sprawdzamy przed wdrożeniem.
 - **Fonty Google** (`next/font/google`) wymagają sieci przy buildzie. Build bez
   dostępu do `fonts.googleapis.com` padnie — to nie jest błąd kodu.
 - **Sesja Cowork nie dosięga `localhost`.** Weryfikacja wizualna wyłącznie przez
