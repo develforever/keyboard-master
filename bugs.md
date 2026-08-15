@@ -22,13 +22,21 @@ wypełniacz.
 **Naprawa:** renderer bloku `numpad` na CSS Grid z `grid-row: span 2`.
 Kontekst: `docs/adr/0003`.
 
-### B-002 · P1 · `next@16.0.8` ma zgłoszoną podatność bezpieczeństwa
+### B-014 · P3 · `image-size` z podatnością DoS w zależnościach deweloperskich
 
-npm ostrzega przy każdej instalacji, advisory z 2025-12-11.
+`npm audit` zgłasza trzy podatności high w `image-size` (GHSA-w3rx-r6r6-pgpr,
+GHSA-5p2g-fcmc-qvqq — nieskończone pętle w parserach ICNS, JXL i HEIF).
+Łańcuch: `@storybook/nextjs-vite` → `vite-plugin-storybook-nextjs` → `image-size`.
+**Poprawki nie ma** („No fix available") — czekamy na wydanie u dostawcy.
 
-**Odtworzenie:** `cd app; npm install` — ostrzeżenie w wyjściu.
-**Skutek:** znana podatność w zależności produkcyjnej.
-**Naprawa:** podbicie do najnowszej wersji 16.x, potem `npm run verify` i `npm run build`.
+**Odtworzenie:** `npm audit` w katalogu głównym — trzy wpisy high.
+Kontrola zakresu: `npm audit --omit=dev` daje `found 0 vulnerabilities`.
+**Skutek:** żaden dla wdrożenia. `image-size` nie wchodzi do bundla
+produkcyjnego, jest wyłącznie w łańcuchu Storybooka. Wektor to spreparowany
+plik graficzny przetwarzany lokalnie przy buildzie Storybooka.
+**Naprawa:** poczekać na `vite-plugin-storybook-nextjs` bez podatnej zależności;
+Dependabot (patrz `todo.md`) wychwyci wydanie. Nie ma powodu do obchodzenia
+problemu przez `overrides` przy tym poziomie ryzyka.
 
 ### B-004 · P3 · Katalog `_to_delete/` do usunięcia
 
@@ -64,17 +72,42 @@ przebuduje układ ekranu.
 
 ## Naprawione
 
-### B-013 · P2 · Znacznik BOM w `.nvmrc` — ✅ 2026-08-15
+### B-002 · P1 · `next@16.0.8` ma zgłoszoną podatność bezpieczeństwa — ✅ 2026-08-15
+
+npm ostrzegał przy każdej instalacji, advisory z 2025-12-11. Po upublicznieniu
+repo graf zależności — a z nim podatna wersja — był widoczny dla wszystkich.
+
+Podbite do **`next@16.3.1`** i **`eslint-config-next@16.3.1`** (najnowsze 16.x;
+świadomie zostajemy w 16.x, przejście na 17 to osobna decyzja). Obie wersje
+przypięte dokładnie, bez `^`.
+
+**Weryfikacja:** `npm run verify` zielone (typecheck, lint, 35/35 testów),
+`npm run build` zielony na Turbopacku. React Compiler nadal aktywny — chunk
+produkcyjny z komponentami klawiatury zawiera alokacje cache'u memoizacji
+z `react/compiler-runtime` (`(0, o.c)(19)` w komponencie klawisza), więc
+transformacja faktycznie zachodzi, a nie tylko `reactCompiler: true` stoi
+w konfiguracji. `npm audit --omit=dev` — `found 0 vulnerabilities`.
+
+Pozostałe znaleziska audytu dotyczą wyłącznie zależności deweloperskich
+i mają własny wpis: B-014.
+
+### B-013 · P3 · Znacznik BOM w `.nvmrc` w kopii roboczej — ✅ 2026-08-15
 
 PowerShell zapisał plik poleceniem `Set-Content -Encoding utf8`, co dołożyło
 znacznik kolejności bajtów (`EF BB BF`) przed `v24.13.0`. Widoczne przez
 `od -c .nvmrc` jako `357 273 277 v 2 4 . 1 3 . 0`.
 
-**Skutek:** narzędzia czytające `.nvmrc` jako czysty tekst dostają wersję
-`\ufeffv24.13.0`. Czy `actions/setup-node` faktycznie by na tym padł — nie
-sprawdziliśmy, CI jeszcze nie ruszyło; poprawione prewencyjnie, bo koszt jest zerowy.
-**Naprawa:** plik przepisany bez BOM, z końcem linii. Na Windows do plików
-konfiguracyjnych używaj `-Encoding utf8NoBOM` albo `[IO.File]::WriteAllText()`.
+**Zasięg: wyłącznie kopia robocza.** BOM nigdy nie trafił do commita — żadna
+wersja `.nvmrc` w historii go nie zawiera (sprawdzone przez `git show <rev>:.nvmrc`
+dla wszystkich rewizji dotykających pliku). Ani repo, ani CI nigdy nie widziały
+zepsutej zawartości; pierwotny opis sugerujący defekt w repo był błędny.
+
+**Skutek:** żaden poza lokalnym — narzędzia czytające `.nvmrc` jako czysty tekst
+dostałyby na tej maszynie wersję z prefiksem BOM zamiast czystego `v24.13.0`.
+CI nigdy nie był zagrożony, bo `actions/setup-node` czyta plik z commita.
+**Naprawa:** plik przepisany bez BOM, z końcem linii. Wpis zostaje jako zapis
+pułapki narzędziowej, nie defektu repo: na Windows do plików konfiguracyjnych
+używaj `-Encoding utf8NoBOM` albo `[IO.File]::WriteAllText()`.
 
 ### B-003 · P2 · `.nvmrc` niezgodne z zainstalowanym Node — ✅ 2026-08-15
 

@@ -69,7 +69,8 @@ Repo jest publiczne od 2026-08-15. Rzeczy, które wcześniej nie miały znaczeni
       **Musi być przed pierwszym publicznym wdrożeniem**; przy pracy lokalnej
       obowiązek się nie aktywuje, więc nie blokuje fazy 1.
 - [ ] **Włączyć Dependabot** (Settings → Code security). Dla repo publicznych
-      za darmo; przy otwartym B-002 to konkretna wartość, a nie formalność.
+      za darmo. B-002 pokazało, że podbicia trzeba wychwytywać automatycznie —
+      advisory leżało otwarte przez dwie fazy.
 - [ ] Uzupełnić opis i tematy repozytorium — obecnie „Keyboard games",
       README mówi znacznie więcej.
 - [ ] Rozważyć `CONTRIBUTING.md`, jeśli repo ma przyjmować zgłoszenia.
