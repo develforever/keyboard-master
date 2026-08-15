@@ -1,0 +1,17 @@
+#!/bin/sh
+# Hook uruchamiany przez git z katalogu głównego repo.
+# Aktywacja (jednorazowo, robi to też `npm run prepare`):
+#   git config --local core.hooksPath .githooks
+#
+# Pominięcie w wyjątkowej sytuacji: git commit --no-verify
+
+set -e
+
+cd "$(dirname "$0")/.."
+
+if [ ! -d node_modules ]; then
+  echo "pre-commit: brak node_modules — uruchom 'npm ci'." >&2
+  exit 1
+fi
+
+npx --no-install lint-staged

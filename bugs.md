@@ -1,0 +1,92 @@
+# Bugs
+
+Defekty i dług techniczny. Każdy wpis ma ID `B-xxx`, kroki odtworzenia i skutek.
+Wpis bez kroków odtworzenia nie jest bugiem, tylko pomysłem — jego miejsce
+jest w `features.md`.
+
+Priorytety: `P1` blokuje pracę lub psuje działanie · `P2` widoczne dla gracza ·
+`P3` dług techniczny bez wpływu na działanie.
+
+---
+
+## Otwarte
+
+### B-001 · P3 · Klawisze numpada nie mają wysokości 2u
+
+`NumpadAdd` i `NumpadEnter` są fizycznie wysokie na dwa rzędy. Renderer oparty na
+rzędach flex tego nie odwzorowuje — klawisze zajmują jedno pole, a pod nimi jest
+wypełniacz.
+
+**Odtworzenie:** otwórz aplikację, porównaj blok numeryczny z fizyczną klawiaturą.
+**Skutek:** kosmetyczny, nie wpływa na rozgrywkę.
+**Naprawa:** renderer bloku `numpad` na CSS Grid z `grid-row: span 2`.
+Kontekst: `docs/adr/0003`.
+
+### B-002 · P1 · `next@16.0.8` ma zgłoszoną podatność bezpieczeństwa
+
+npm ostrzega przy każdej instalacji, advisory z 2025-12-11.
+
+**Odtworzenie:** `cd app; npm install` — ostrzeżenie w wyjściu.
+**Skutek:** znana podatność w zależności produkcyjnej.
+**Naprawa:** podbicie do najnowszej wersji 16.x, potem `npm run verify` i `npm run build`.
+
+### B-003 · P2 · `.nvmrc` niezgodne z zainstalowanym Node
+
+`.nvmrc` deklaruje `v25.0.0`, na maszynie deweloperskiej jest Node 22.22.3.
+CI czyta `.nvmrc`, więc buduje na innej wersji niż lokalna.
+
+**Odtworzenie:** `node -v` vs `cat .nvmrc`.
+**Skutek:** różnice środowisk potrafią dać zielone lokalnie, czerwone w CI.
+**Naprawa:** decyzja, która wersja jest docelowa, i wyrównanie obu stron.
+Uwaga: generator raportów wymaga Node ≥ 22.18 (usuwanie typów bez flagi).
+
+### B-004 · P3 · Katalog `app/_to_delete/` do usunięcia
+
+Pozostałości scaffoldingu Storybooka (`src/stories`) i archiwum setupu.
+Przeniesione tam, bo most do dysku nie pozwala na kasowanie plików.
+
+**Naprawa:** `Remove-Item -Recurse -Force app/_to_delete`.
+
+### B-005 · P3 · `AppContext` ze scaffoldingu wymaga rewizji
+
+`lang` nie jest nigdzie przełączany, a `isReady` dubluje stan ładowania, który
+`ToTranscribe` trzyma już lokalnie. Dwa źródła prawdy o tym samym.
+
+**Skutek:** przy dodawaniu ustawień gracza łatwo rozjechać stany.
+**Naprawa:** zaplanowana w fazie 1 (patrz `todo.md`).
+
+---
+
+## Naprawione
+
+### B-006 · P1 · `preventDefault()` blokował F5, F12 i skróty z Ctrl — ✅ 2026-08-15
+
+`Keyboard.tsx` wołał `preventDefault()` i `stopPropagation()` na każdym `keydown`.
+Naprawione listą `SWALLOWED_CODES` w `keyStream.ts` i pominięciem zdarzeń
+z wciśniętym Ctrl/Meta/Alt.
+
+### B-007 · P1 · Wszystkie pliki widoczne jako zmienione (CRLF) — ✅ 2026-08-15
+
+Repo trzymało LF, Windows zapisywał CRLF — `git status` pokazywał 26 plików
+i ponad 10 000 zmienionych linii. Naprawione przez `.gitattributes` z `eol=lf`.
+
+### B-008 · P2 · Zduplikowane kody klawiszy — ✅ 2026-08-15
+
+`Enter` występował w rzędzie głównym i na numpadzie (powinno być `NumpadEnter`),
+`Backslash` dwa razy. Naciśnięcie podświetlało oba. Naprawione przez przeniesienie
+układu do danych i test wykrywający duplikaty.
+
+### B-009 · P2 · Klawisze zacinały się po Alt+Tab — ✅ 2026-08-15
+
+Brak obsługi `blur` — klawisz wciśnięty w chwili przełączenia okna zostawał
+podświetlony na zawsze. Naprawione przez `createBlurStream` → `releaseAll`.
+
+### B-010 · P1 · Root layout w całości po stronie klienta — ✅ 2026-08-15
+
+`wrapper.tsx` renderował `<html>` jako komponent kliencki, przez co cała
+aplikacja lądowała w bundlu klienta. Naprawione — `layout.tsx` jest serwerowy.
+
+### B-011 · P2 · Storybook nie wstawał — ✅ 2026-08-15
+
+`.storybook/main.ts` wskazywał trzy addony nieobecne w `package.json`
+(w Storybooku 10 essentials są w rdzeniu). Naprawione — pusta lista `addons`.
