@@ -17,7 +17,7 @@ Faza 0 zamknięta, zweryfikowana w przeglądarce i zmerge'owana do `main`.
 Architektura warstwowa stoi, warstwa domenowa (punktacja, model klawiatury,
 challenge'e) ma 35 przechodzących testów. Klawiatura renderuje się z danych,
 obsługuje akordy i nie zacina klawiszy po utracie fokusu. Projekt stoi na
-Node 24.13.0.
+Node 24.15.0.
 
 Zweryfikowane automatycznie: `typecheck`, `lint`, `format:check`, `test` (35/35),
 `next build` z React Compilerem.
@@ -49,7 +49,8 @@ będzie pierwszym prawdziwym testem `.github/workflows/ci.yml` — spodziewaj si
 - Lokalne repo bywa w tyle za GitHubem, bo merge'e szły przez interfejs webowy.
   Zaczynaj od `git switch main; git pull`.
 - Komendy npm z katalogu głównego; podkatalog `app/` już nie istnieje.
-- Node 24.13.0 z `.nvmrc`. Tylko wersje parzyste, pin dokładny, bez BOM —
+- Node 24.15.0 z `.nvmrc` (`nvm install 24.15.0; nvm use 24.15.0` — maszyna
+  deweloperska stała na 24.14.0). Tylko wersje parzyste, pin dokładny, bez BOM —
   zasady w `docs/adr/0004`.
 - Weryfikacja wizualna wymaga uruchomionego `npm run dev` i przeglądarki
   użytkownika — sesja chmurowa nie dosięga `localhost`.

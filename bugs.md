@@ -118,6 +118,7 @@ bezpieczeństwa 1 czerwca 2026.
 
 Wyrównane do **Node 24.13.0** (Active LTS, wsparcie bezpieczeństwa do
 30 kwietnia 2028). Uzasadnienie wyboru: `docs/adr/0004`.
+Pin podbity później do `v24.15.0` — patrz sekcja „Aktualizacje" w tym ADR.
 
 ### B-006 · P1 · `preventDefault()` blokował F5, F12 i skróty z Ctrl — ✅ 2026-08-15
 

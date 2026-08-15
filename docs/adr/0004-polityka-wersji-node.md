@@ -31,7 +31,8 @@ faza pre-LTS to niepotrzebne ryzyko. Wrócimy do tego po jego promocji.
 
 ## Decyzja
 
-Projekt stoi na **Node 24.13.0**, zapisanym w `.nvmrc` jako `v24.13.0`.
+Projekt stoi na **Node 24.15.0**, zapisanym w `.nvmrc` jako `v24.15.0`.
+(Pierwotnie 24.13.0 — historia pinów w sekcji „Aktualizacje" na końcu.)
 
 Zasady na przyszłość:
 
@@ -40,7 +41,7 @@ Zasady na przyszłość:
 2. **`.nvmrc` jest jedynym źródłem prawdy.** CI czyta je przez `node-version-file`,
    deweloper przez `nvm use`. Zmiana wersji to zmiana tego pliku, nigdy sama
    konfiguracja pipeline'u.
-3. **Wersja pinowana dokładnie** (`v24.13.0`, nie `24`). Przy `nvm` i CI dokładny
+3. **Wersja pinowana dokładnie** (`v24.15.0`, nie `24`). Przy `nvm` i CI dokładny
    pin usuwa całą klasę różnic między maszynami.
 4. **Dolna granica to Node 22.18** — od niej działa usuwanie typów bez flagi,
    z czego korzysta `scripts/make-report.mts`. Zejście niżej wymaga kroku
@@ -66,3 +67,20 @@ Zasady na przyszłość:
   przewidywalność jest tu warta więcej niż automatyczne aktualizacje.
 - Przy podbiciu majora trzeba przelecieć pełny `npm run build`, bo Turbopack
   i React Compiler bywają wrażliwe na zmianę wersji Node.
+
+## Aktualizacje
+
+Decyzja z sekcji „Decyzja" stoi — zmienia się wyłącznie sam pin łatki, zgodnie
+z zasadą 3. Każdy taki ruch dopisujemy tutaj, zamiast zakładać nowy ADR.
+
+**2026-08-15 · `v24.13.0` → `v24.15.0`.** Przy podbiciu Next.js (B-002)
+`npm install` zaczął zgłaszać `EBADENGINE` dla `jsdom@30.0.1`, które wymaga
+`^22.22.2 || ^24.15.0 || >=26.0.0`. Pin 24.13.0 był poniżej tego progu, więc
+narzędzie testowe działało na wersji, której samo nie deklaruje jako wspieranej.
+24.15.0 to najniższa wersja spełniająca ten wymóg — świadomie wybrana zamiast
+najnowszej 24.x, żeby podbicie było minimalne i weryfikowalne.
+
+Konsekwencja przy tym konkretnym podbiciu: maszyna deweloperska miała
+w tym momencie Node 24.14.0, czyli **poniżej nowego pinu**. Po pobraniu zmian
+wymagane jest `nvm install 24.15.0; nvm use 24.15.0` — inaczej lokalnie dalej
+działa 24.14.0 i wraca ten sam rozjazd z CI, który zamykało B-003.
