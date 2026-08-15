@@ -30,22 +30,13 @@ npm ostrzega przy każdej instalacji, advisory z 2025-12-11.
 **Skutek:** znana podatność w zależności produkcyjnej.
 **Naprawa:** podbicie do najnowszej wersji 16.x, potem `npm run verify` i `npm run build`.
 
-### B-003 · P2 · `.nvmrc` niezgodne z zainstalowanym Node
+### B-004 · P3 · Katalog `_to_delete/` do usunięcia
 
-`.nvmrc` deklaruje `v25.0.0`, na maszynie deweloperskiej jest Node 22.22.3.
-CI czyta `.nvmrc`, więc buduje na innej wersji niż lokalna.
-
-**Odtworzenie:** `node -v` vs `cat .nvmrc`.
-**Skutek:** różnice środowisk potrafią dać zielone lokalnie, czerwone w CI.
-**Naprawa:** decyzja, która wersja jest docelowa, i wyrównanie obu stron.
-Uwaga: generator raportów wymaga Node ≥ 22.18 (usuwanie typów bez flagi).
-
-### B-004 · P3 · Katalog `app/_to_delete/` do usunięcia
-
-Pozostałości scaffoldingu Storybooka (`src/stories`) i archiwum setupu.
+Pozostałości scaffoldingu Storybooka (`src/stories`), boilerplate `app/README.md`
+i archiwa transportowe z sesji Cowork.
 Przeniesione tam, bo most do dysku nie pozwala na kasowanie plików.
 
-**Naprawa:** `Remove-Item -Recurse -Force app/_to_delete`.
+**Naprawa:** `Remove-Item -Recurse -Force _to_delete`.
 
 ### B-005 · P3 · `AppContext` ze scaffoldingu wymaga rewizji
 
@@ -72,6 +63,28 @@ przebuduje układ ekranu.
 ---
 
 ## Naprawione
+
+### B-013 · P2 · Znacznik BOM w `.nvmrc` — ✅ 2026-08-15
+
+PowerShell zapisał plik poleceniem `Set-Content -Encoding utf8`, co dołożyło
+znacznik kolejności bajtów (`EF BB BF`) przed `v24.13.0`. Widoczne przez
+`od -c .nvmrc` jako `357 273 277 v 2 4 . 1 3 . 0`.
+
+**Skutek:** narzędzia czytające `.nvmrc` jako czysty tekst dostają wersję
+`\ufeffv24.13.0`. Czy `actions/setup-node` faktycznie by na tym padł — nie
+sprawdziliśmy, CI jeszcze nie ruszyło; poprawione prewencyjnie, bo koszt jest zerowy.
+**Naprawa:** plik przepisany bez BOM, z końcem linii. Na Windows do plików
+konfiguracyjnych używaj `-Encoding utf8NoBOM` albo `[IO.File]::WriteAllText()`.
+
+### B-003 · P2 · `.nvmrc` niezgodne z zainstalowanym Node — ✅ 2026-08-15
+
+`.nvmrc` deklarowało `v25.0.0`, lokalnie był Node 22 — CI budowało na innej
+wersji niż maszyna deweloperska. Przy okazji wyszło, że **Node 25 był już po
+końcu życia**: aktywne wsparcie skończyło się 1 kwietnia 2026, a wsparcie
+bezpieczeństwa 1 czerwca 2026.
+
+Wyrównane do **Node 24.13.0** (Active LTS, wsparcie bezpieczeństwa do
+30 kwietnia 2028). Uzasadnienie wyboru: `docs/adr/0004`.
 
 ### B-006 · P1 · `preventDefault()` blokował F5, F12 i skróty z Ctrl — ✅ 2026-08-15
 

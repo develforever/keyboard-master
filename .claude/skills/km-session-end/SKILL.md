@@ -67,7 +67,7 @@ Zasady:
 Szablon:
 
 ```powershell
-cd C:\Users\robert\code\keyboard-master
+# uruchamiane z katalogu repozytorium
 git rev-parse --abbrev-ref HEAD          # kontrola: nie pracujemy na main
 git switch -c feat/F-005-stan-sesji
 git add -A

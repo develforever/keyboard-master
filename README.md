@@ -1,6 +1,13 @@
 # Keyboard Master
 
+[![CI](https://github.com/develforever/keyboard-master/actions/workflows/ci.yml/badge.svg)](https://github.com/develforever/keyboard-master/actions/workflows/ci.yml)
+
 Trenażer pisania bezwzrokowego z warstwą gamingową: challenge'e, combo, XP i punktacja.
+
+> **Stan:** wczesna faza. Warstwa domenowa — silnik punktacji, model klawiatury
+> i challenge'e — jest gotowa i pokryta testami. Klawiatura reaguje na fizyczne
+> klawisze. Pętli gry jeszcze nie ma: nie da się przepisać tekstu ani zobaczyć
+> wyniku. Zakres i postęp: [`features.md`](features.md).
 
 ## Wymagania
 
@@ -69,3 +76,12 @@ Zadanie istnieje w dokładnie jednym z tych plików.
 - `pre-push` — pełne `npm run verify`
 
 Pominięcie: `git commit --no-verify` / `git push --no-verify`.
+
+## Licencja
+
+[AGPL-3.0-only](LICENSE).
+
+Możesz używać, modyfikować i rozpowszechniać ten kod. Jeśli udostępniasz
+zmodyfikowaną wersję użytkownikom przez sieć — również jako serwis — musisz
+udostępnić im kod źródłowy swojej wersji (§13). Uzasadnienie wyboru:
+[`docs/adr/0005`](docs/adr/0005-licencja-agpl.md).
