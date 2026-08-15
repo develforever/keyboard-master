@@ -25,6 +25,8 @@ Zakres fazy i kryterium jej ukończenia: `features.md`.
 - [ ] Komponent tekstu: znak bieżący, znaki poprawne, znaki błędne, znaki przed nami
 - [ ] Przewijanie tekstu, gdy pozycja wychodzi poza widok
 - [ ] Testy: znak spoza układu, znak z `shiftLabel`, koniec tekstu
+- [ ] Ograniczyć szerokość bloku tekstu (`max-w-3xl`) — przy 1568 px linie są
+      za długie, oko gubi pozycję przy przepisywaniu
 
 ## F-007 — HUD na żywo
 
@@ -40,6 +42,19 @@ Zakres fazy i kryterium jej ukończenia: `features.md`.
 - [ ] Przycisk powtórzenia i przejścia do listy challenge'y (stub do fazy 2)
 
 ---
+
+## Zweryfikowane w przeglądarce 2026-08-15
+
+Nie wymaga działań — zapis, żeby nie sprawdzać drugi raz:
+
+- [x] 104 realne klawisze, zero duplikatów kodów, `Enter` i `NumpadEnter` rozdzielone
+- [x] Proporcje zgodne z modelem (spacja 6,15u, Shift 2,17u, Backspace 1,90u)
+- [x] Akordy: Shift+A i Ctrl+Alt+Del podświetlają wszystkie klawisze naraz
+- [x] F5, F12, Escape, Ctrl+R, Ctrl+W nie są przechwytywane przez aplikację
+- [x] Spacja, Tab, strzałki i Backspace są przechwytywane (zgodnie z zamysłem)
+- [x] Utrata fokusu okna czyści wciśnięte klawisze — brak zacinania
+- [x] Auto-powtarzanie nie duplikuje stanu
+- [x] Konsola czysta, zero ostrzeżeń hydratacji
 
 ## Dług do spłacenia w tej fazie
 

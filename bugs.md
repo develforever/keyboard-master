@@ -55,6 +55,20 @@ Przeniesione tam, bo most do dysku nie pozwala na kasowanie plików.
 **Skutek:** przy dodawaniu ustawień gracza łatwo rozjechać stany.
 **Naprawa:** zaplanowana w fazie 1 (patrz `todo.md`).
 
+### B-012 · P3 · Klawiatura nie jest wyśrodkowana w pionie
+
+W `src/app/page.tsx` kontener ma `justify-center`, ale dziecko z `flex-1`
+pochłania całą wolną przestrzeń — `justify-content` nie ma czego rozdzielać.
+Klawiatura renderuje się w naturalnej wysokości przy górnej krawędzi tego dziecka.
+
+**Odtworzenie:** otwórz `localhost:3000` w oknie o wysokości ~730 px.
+Klawiatura przykleja się do góry, pod nią zostaje pusty obszar,
+a licznik znaków ląduje przy dolnej krawędzi.
+**Skutek:** kosmetyczny; przy niskich oknach layout wygląda na niedokończony.
+**Naprawa:** usunąć `flex-1` z kontenera klawiatury albo dodać mu
+`flex items-center`. Do zrobienia przy F-007, gdy powstanie HUD i tak
+przebuduje układ ekranu.
+
 ---
 
 ## Naprawione
