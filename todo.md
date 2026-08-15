@@ -56,6 +56,24 @@ Nie wymaga działań — zapis, żeby nie sprawdzać drugi raz:
 - [x] Auto-powtarzanie nie duplikuje stanu
 - [x] Konsola czysta, zero ostrzeżeń hydratacji
 
+## Repozytorium publiczne — do domknięcia
+
+Repo jest publiczne od 2026-08-15. Rzeczy, które wcześniej nie miały znaczenia:
+
+- [ ] **Wgrać `LICENSE`** z pełnym tekstem AGPL-3.0 (decyzja: `docs/adr/0005`).
+      Najprościej przez GitHub → Add file → Create new file → nazwa `LICENSE`
+      → przycisk „Choose a license template" → GNU AGPLv3. Ta droga daje
+      dokładny tekst i włącza wykrywanie licencji przez GitHuba.
+- [ ] **Odnośnik do źródeł w interfejsie aplikacji** — wymóg §13 AGPL.
+      Widoczny link do repozytorium w stopce, wskazujący konkretną wersję.
+      **Musi być przed pierwszym publicznym wdrożeniem**; przy pracy lokalnej
+      obowiązek się nie aktywuje, więc nie blokuje fazy 1.
+- [ ] **Włączyć Dependabot** (Settings → Code security). Dla repo publicznych
+      za darmo; przy otwartym B-002 to konkretna wartość, a nie formalność.
+- [ ] Uzupełnić opis i tematy repozytorium — obecnie „Keyboard games",
+      README mówi znacznie więcej.
+- [ ] Rozważyć `CONTRIBUTING.md`, jeśli repo ma przyjmować zgłoszenia.
+
 ## Dług do spłacenia w tej fazie
 
 - [ ] Rewizja `AppContext` — `lang` i `isReady` pochodzą ze scaffoldingu, `isReady`
