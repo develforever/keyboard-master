@@ -1,0 +1,39 @@
+# zależności
+/node_modules
+/.pnp
+.pnp.*
+
+# next.js
+/.next/
+/out/
+/build
+
+# testy i narzędzia
+/coverage
+/storybook-static
+*storybook.log
+
+# raporty sesji — regenerowalne, ze zrzutami wklejonymi jako data: URL.
+# Pamięć projektu (features.md, todo.md, bugs.md, docs/NEXT-SESSION.md)
+# jest wersjonowana i NIE znajduje się tutaj.
+/reports/
+
+# katalog na pliki do usunięcia (most do dysku nie pozwala kasować)
+/_to_delete/
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# zmienne środowiskowe
+.env*
+!.env.example
+
+# różne
+.DS_Store
+*.pem
+.vercel
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*

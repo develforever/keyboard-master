@@ -1,0 +1,31 @@
+# Normalizuje końce linii: w repozytorium ZAWSZE LF, także w katalogu roboczym
+# na Windows. Bez tego git na Windows pokazywał wszystkie 26 plików jako zmienione
+# (CRLF w working tree vs LF w indeksie), co uniemożliwiało czytelne diffy.
+#
+# Po dodaniu tego pliku wykonaj jednorazowo:
+#   git add --renormalize .
+#   git status        # sprawdź, co faktycznie się zmieniło
+#   git commit -m "chore: normalizacja końców linii do LF"
+
+* text=auto eol=lf
+
+# Pliki wyłącznie windowsowe zachowują CRLF.
+*.bat  text eol=crlf
+*.cmd  text eol=crlf
+*.ps1  text eol=crlf
+
+# Binaria — bez jakiejkolwiek konwersji.
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.webp binary
+*.woff binary
+*.woff2 binary
+*.ttf  binary
+*.otf  binary
+*.pdf  binary
+
+# Lockfile: nie generuj diffa w code review, ale trzymaj w repo.
+package-lock.json -diff linguist-generated=true
